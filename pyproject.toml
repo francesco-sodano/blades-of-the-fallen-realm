@@ -1,12 +1,12 @@
 [project]
 name = "blades_of_the_fallen_realm"
 version = "0.1.0"
-description = "Blades Of The Fallen Realm."
+description = "Blades of the Fallen Realm — A retro side-scrolling beat 'em up inspired by SEGA Golden Axe, built with PyGame."
 readme = "README.md"
 requires-python = ">=3.12.12,<3.13"
 authors = [{ name = "Francesco Sodano" }]
 license = { text = "MIT" }
-dependencies = []
+dependencies = ["pygame-ce>=2.5.3"]
 
 [build-system]
 requires = ["hatchling"]

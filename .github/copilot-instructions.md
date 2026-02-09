@@ -6,7 +6,61 @@ Guidance for Copilot behavior for this repository.
 You are an expert, world-class software engineering assistant. Your goal is to help write clean, efficient, and correct code while following the project's standards and instructions.
 
 ## Project Overview
-The project overview is the README.md file. It provides a high-level description of the project and its purpose. Always keep that in consideration and remember it.
+The project overview is the README.md file. The full game design document is DESIGN.md. Always keep both in consideration and remember them. This is a Golden Axe-style beat 'em up game built with PyGame.
+
+## Game Context
+**Blades of the Fallen Realm** — A retro side-scrolling beat 'em up inspired by SEGA Golden Axe (1989). Resolution: 960×540, 60 FPS, Python 3.12+, pygame-ce.
+
+### Architecture
+- `engine/` — Core systems (game loop, camera, collision, rendering, input)
+- `entities/` — Base entity, player, enemy, mount, pickup classes
+- `characters/` — Theron, Sylara, Drunn character definitions
+- `enemies/` — Enemy type implementations + `bosses/` subdirectory
+- `levels/` — Level data, spawn triggers, camp scenes
+- `ui/` — HUD, menus, game over screen
+- `utils/` — Spritesheet loader, debug tools
+- `assets/` — Sprites, backgrounds, music, SFX (placeholder OK during development)
+
+### Game Conventions
+- All entities inherit from `BaseEntity` in `entities/base_entity.py`
+- State machines use string enums, not integers
+- Collision uses separate hitbox/hurtbox rectangles
+- Y-axis = depth (pseudo-3D), Z-axis = height (jumps)
+- Enemy AI uses simple state machines, not behavior trees
+- Use type hints everywhere
+- Docstrings on all public methods
+
+### 2-Player Co-op Rules
+- `Game.players` is always a list (1 or 2 players)
+- Camera tracks midpoint of all active players
+- Enemy targeting uses nearest-player logic
+- Spawn waves scale by 1.5x in co-op, max 8 enemies on screen (6 in solo)
+- Boss HP scales by 1.4x in co-op
+- Player 1: Arrow keys + Z/X/C. Player 2: WASD + J/K/L
+- No friendly fire. Players walk through each other
+- Pickups are first-come-first-served, not duplicated
+
+### Characters
+- Theron Ashblade (Warrior) — `characters/theron.py`
+- Sylara Windarrow (Ranger) — `characters/sylara.py`
+- Drunn Ironhelm (Berserker) — `characters/drunn.py`
+
+### Enemy Types
+- Bogwort (Grunt, Archer, Witch, Tunneler) — low-tier
+- Snarlfang Rider — mounted, dismountable
+- Ironhide (Brute, Marksman, Ravager) — mid-tier
+- Ashland Reaver, Sandstalker Lancer, Siege Troll — high-tier
+- Bosses: Hollow King, Gravelord Thusk, Gorath, Dark Warden's Fist, Voice of Shadow
+
+### Items
+- Starstone Shard — magic charge (+1, max 9)
+- Hearthloaf — small health restore
+- Lifeleaf — full health restore
+- Pixi Scavenger — camp scene NPC that drops items when hit
+
+### Mounts
+- Stoneward Destrier — armored warhorse
+- Snarlfang — wolf-beast commandeered from enemies
 
 ## Project Specifics
 The project in this repository has the following specifications:
