@@ -1,6 +1,12 @@
 # Blades of the Fallen Realm
 
+<p align="center">
+	<img src="docs_assets/Blades_of_the_Fallen_realm-Logo.jpg" alt="Blades of the Fallen Realm Logo">
+</p>
+
 A retro-style side-scrolling beat 'em up inspired by SEGA Golden Axe (1989), built with **PyGame**. Choose from three warriors — a banished king, an elven ranger, or a dwarven champion — and fight through 5 levels of Bogworts, Ironhides, and dark sorcery. Features combo combat, tiered magic, rideable mounts, and local 2-player co-op.
+
+
 
 ## Features
 
