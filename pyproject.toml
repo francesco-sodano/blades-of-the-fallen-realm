@@ -1,7 +1,7 @@
 [project]
-name = "project_name"
+name = "blades_of_the_fallen_realm"
 version = "0.1.0"
-description = "Description of the project."
+description = "Blades Of The Fallen Realm."
 readme = "README.md"
 requires-python = ">=3.12.12,<3.13"
 authors = [{ name = "Francesco Sodano" }]

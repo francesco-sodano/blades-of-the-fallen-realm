@@ -1,6 +1,6 @@
-# project_name
+# Blades Of The Fallen Realm
 
-Brief description of what this project does.
+Blades Of The Fallen Realm.
 
 ## Features
 
@@ -15,15 +15,15 @@ Brief description of what this project does.
 ## Installation
 
 ```bash
-git clone https://github.com/<your-user>/project_name.git
-cd project_name
+git clone https://github.com/francesco-sodano/blades-of-the-fallen-realm.git
+cd blades-of-the-fallen-realm
 uv sync --group dev
 ```
 
 ## Usage
 
 ```bash
-python -m project_name
+python -m blades_of_the_fallen_realm
 ```
 
 ## Development
@@ -38,9 +38,9 @@ This project uses [uv](https://docs.astral.sh/uv/) as the package manager and a 
 ### Project structure
 
 ```
-src/project_name/   # Package source code
-tests/              # Tests (pytest)
-scripts/            # Helper scripts
+src/blades_of_the_fallen_realm/   # Package source code
+tests/                            # Tests (pytest)
+scripts/                          # Helper scripts
 ```
 
 ### Run tests
@@ -59,8 +59,8 @@ mypy src/
 ## Docker
 
 ```bash
-docker build -t project_name .
-docker run --rm project_name
+docker build -t blades_of_the_fallen_realm .
+docker run --rm blades_of_the_fallen_realm
 ```
 
 ## License
