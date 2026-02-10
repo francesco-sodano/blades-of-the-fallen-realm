@@ -9,7 +9,6 @@ from blades_of_the_fallen_realm.engine.game import Game, GameState
 @pytest.fixture
 def game() -> Game:
     """Create a fresh Game instance for each test."""
-    pygame.init()
     return Game()
 
 

@@ -1,17 +1,8 @@
 """Tests for BaseEntity.draw() camera offset and z-height arithmetic."""
 
 import pygame
-import pytest
 
 from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
-
-
-@pytest.fixture(autouse=True)
-def _init_pygame() -> None:
-    """Ensure pygame is initialised for every test."""
-    pygame.init()
-    yield  # type: ignore[misc]
-    pygame.quit()
 
 
 def test_draw_zero_camera_offset() -> None:
