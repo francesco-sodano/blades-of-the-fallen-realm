@@ -7,8 +7,7 @@ from typing import Any
 
 import pygame
 
-# Combo window constant (milliseconds)
-COMBO_WINDOW_MS: int = 500
+from blades_of_the_fallen_realm.settings import COMBO_WINDOW_MS
 
 
 @dataclass
