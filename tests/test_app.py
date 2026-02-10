@@ -1,5 +1,7 @@
 """Smoke tests for main.py and __main__.py entry points."""
 
+import tomllib
+from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pygame
@@ -65,7 +67,11 @@ def test_version_matches_pyproject() -> None:
     """__version__ should match the package metadata version."""
     from blades_of_the_fallen_realm import __version__
 
-    assert __version__ == "0.1.0"
+    pyproject_path = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    with pyproject_path.open("rb") as pyproject_file:
+        pyproject_data = tomllib.load(pyproject_file)
+
+    assert __version__ == pyproject_data["project"]["version"]
 
 
 def test_version_is_string() -> None:
