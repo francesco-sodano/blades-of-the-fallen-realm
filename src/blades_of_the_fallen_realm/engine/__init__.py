@@ -1,1 +1,1 @@
-"""Blades of the Fallen Realm — A retro beat 'em up inspired by SEGA Golden Axe."""
+"""Core engine systems — game loop, camera, collision, rendering, input."""
