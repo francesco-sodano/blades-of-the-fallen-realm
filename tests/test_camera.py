@@ -23,12 +23,6 @@ class _MockPlayer:
         self.x = x
 
 
-@pytest.fixture
-def camera() -> Camera:
-    """Return a fresh Camera instance for each test."""
-    return Camera()
-
-
 # ---------------------------------------------------------------------------
 # Midpoint tracking — 1 player
 # ---------------------------------------------------------------------------
