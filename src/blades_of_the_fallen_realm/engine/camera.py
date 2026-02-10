@@ -2,9 +2,15 @@
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Protocol
 
 from blades_of_the_fallen_realm.settings import PLAYER_LEASH, SCREEN_WIDTH
+
+
+class HasX(Protocol):
+    """Structural type for any object with a mutable ``x`` attribute."""
+
+    x: float
 
 
 class Camera:
@@ -43,7 +49,7 @@ class Camera:
 
     # --- core update ---------------------------------------------------------
 
-    def update(self, players: list[Any], level_width: int) -> None:
+    def update(self, players: list[HasX], level_width: int) -> None:
         """Track the midpoint of all player X positions.
 
         The camera X is set to centre the midpoint on screen, then clamped
@@ -95,7 +101,7 @@ class Camera:
 
     # --- player leash --------------------------------------------------------
 
-    def clamp_player(self, player: Any) -> None:
+    def clamp_player(self, player: HasX) -> None:
         """Prevent a player from moving beyond the leash distance.
 
         If the player's X position is more than ``PLAYER_LEASH`` pixels from

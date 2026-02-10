@@ -105,3 +105,47 @@ def test_import_utils_modules() -> None:
     ]
     for mod in modules:
         importlib.import_module(mod)
+
+
+def test_engine_package_import_camera() -> None:
+    """Verify Camera is importable from the engine package."""
+    from blades_of_the_fallen_realm.engine import Camera
+
+    assert Camera is not None
+
+
+def test_engine_package_import_game() -> None:
+    """Verify Game and GameState are importable from the engine package."""
+    from blades_of_the_fallen_realm.engine import Game, GameState
+
+    assert Game is not None
+    assert GameState is not None
+
+
+def test_engine_package_import_input_handler() -> None:
+    """Verify InputHandler is importable from the engine package."""
+    from blades_of_the_fallen_realm.engine import InputHandler
+
+    assert InputHandler is not None
+
+
+def test_engine_package_import_renderer() -> None:
+    """Verify Renderer is importable from the engine package."""
+    from blades_of_the_fallen_realm.engine import Renderer
+
+    assert Renderer is not None
+
+
+def test_engine_package_import_animation() -> None:
+    """Verify AnimationController and AnimationData are importable from the engine package."""
+    from blades_of_the_fallen_realm.engine import AnimationController, AnimationData
+
+    assert AnimationController is not None
+    assert AnimationData is not None
+
+
+def test_entities_package_import_base_entity() -> None:
+    """Verify BaseEntity is importable from the entities package."""
+    from blades_of_the_fallen_realm.entities import BaseEntity
+
+    assert BaseEntity is not None

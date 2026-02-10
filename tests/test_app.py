@@ -3,6 +3,7 @@
 from unittest.mock import MagicMock, patch
 
 import pygame
+import pytest
 
 
 def test_main_module_importable() -> None:
@@ -19,9 +20,8 @@ def test_main_function_is_callable() -> None:
     assert callable(main)
 
 
-@patch("blades_of_the_fallen_realm.main.sys")
 @patch("blades_of_the_fallen_realm.main.pygame")
-def test_main_initializes_pygame(mock_pygame: MagicMock, mock_sys: MagicMock) -> None:
+def test_main_initializes_pygame(mock_pygame: MagicMock) -> None:
     """main() should call pygame.init() and set_mode() with correct settings."""
     from blades_of_the_fallen_realm.main import main
     from blades_of_the_fallen_realm.settings import (
@@ -43,6 +43,36 @@ def test_main_initializes_pygame(mock_pygame: MagicMock, mock_sys: MagicMock) ->
     mock_pygame.display.set_mode.assert_called_once_with((SCREEN_WIDTH, SCREEN_HEIGHT))
     mock_pygame.display.set_caption.assert_called_once_with(GAME_TITLE)
     mock_pygame.quit.assert_called_once()
+
+
+@patch("blades_of_the_fallen_realm.main.pygame")
+def test_main_does_not_raise_system_exit(mock_pygame: MagicMock) -> None:
+    """main() should not raise SystemExit after quitting PyGame."""
+    from blades_of_the_fallen_realm.main import main
+
+    quit_event = MagicMock()
+    quit_event.type = pygame.QUIT
+    mock_pygame.QUIT = pygame.QUIT
+    mock_pygame.event.get.return_value = [quit_event]
+
+    try:
+        main()
+    except SystemExit:
+        pytest.fail("main() raised SystemExit unexpectedly")
+
+
+def test_version_matches_pyproject() -> None:
+    """__version__ should match the package metadata version."""
+    from blades_of_the_fallen_realm import __version__, _read_version_from_pyproject
+
+    assert __version__ == _read_version_from_pyproject()
+
+
+def test_version_is_string() -> None:
+    """__version__ should be a string."""
+    from blades_of_the_fallen_realm import __version__
+
+    assert isinstance(__version__, str)
 
 
 def test_dunder_main_importable() -> None:

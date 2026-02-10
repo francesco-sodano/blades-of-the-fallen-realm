@@ -1,6 +1,5 @@
 """Tests for InputHandler and PlayerControls classes."""
 
-from typing import Any
 from unittest.mock import MagicMock
 
 import pygame
@@ -380,7 +379,7 @@ def _make_mock_joystick(
     hat_value: tuple[int, int] = (0, 0),
     axis_values: dict[int, float] | None = None,
     button_values: dict[int, bool] | None = None,
-) -> Any:
+) -> MagicMock:
     """Create a mock joystick with configurable hat, axis, and button values."""
     joy = MagicMock()
     joy.get_numhats.return_value = numhats
