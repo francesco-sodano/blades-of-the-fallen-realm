@@ -9,7 +9,7 @@ You are an expert, world-class software engineering assistant. Your goal is to h
 The project overview is the README.md file. The full game design document is DESIGN.md. Always keep both in consideration and remember them. This is a Golden Axe-style beat 'em up game built with PyGame.
 
 ## Game Context
-**Blades of the Fallen Realm** — A retro side-scrolling beat 'em up inspired by SEGA Golden Axe (1989). Resolution: 960×540, 60 FPS, Python 3.12+, pygame-ce.
+**Blades of the Fallen Realm** — A retro side-scrolling beat 'em up inspired by SEGA Golden Axe (1989). Resolution: 960×540, 60 FPS, Python 3.12.12+, pygame-ce.
 
 ### Architecture
 - `engine/` — Core systems (game loop, camera, collision, rendering, input)
@@ -64,10 +64,10 @@ The project overview is the README.md file. The full game design document is DES
 
 ## Project Specifics
 The project in this repository has the following specifications:
-- Language: Python 3.12.
+- Language: Python 3.12.12+.
 - Package manager: uv; `pyproject.toml` is the single source of truth for all project metadata, dependencies, and tool configurations.
 - Dependencies: Runtime dependencies are in `[project.dependencies]`; dev tools (e.g., black, mypy, pytest) are in the `dev` group under `[dependency-groups]`. No `requirements.txt` files are used.
-- Post-create: `postCreate.sh` installs the latest Python 3.12 via `uv`, creates a `.venv`, and runs `uv sync --group dev`.
+- Post-create: `postCreate.sh` installs Python 3.12.12 via `uv`, creates a `.venv`, and runs `uv sync --group dev`.
 - Layout: `src/blades_of_the_fallen_realm/` for package code, `tests/` for pytest, `scripts/` for helpers, `Dockerfile` and `.dockerignore` at the repo root.
 - Builds: hatchling backend.
 - Docker: Respect `.dockerignore`; keep image builds using `uv` for installs.
