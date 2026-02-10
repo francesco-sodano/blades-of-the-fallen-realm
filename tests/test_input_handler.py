@@ -1,5 +1,8 @@
 """Tests for InputHandler and PlayerControls classes."""
 
+from typing import Any
+from unittest.mock import MagicMock
+
 import pygame
 import pytest
 
@@ -371,3 +374,166 @@ def test_input_handler_has_joystick_attribute(pygame_init: None) -> None:
     handler = InputHandler(1, P1_CONTROLS)
     assert hasattr(handler, "joystick")
     # Will be None if no gamepad is connected
+
+
+# ---------------------------------------------------------------------------
+# Gamepad mock tests — _check_gamepad_action()
+# ---------------------------------------------------------------------------
+
+
+def _make_mock_joystick(
+    *,
+    numhats: int = 0,
+    numaxes: int = 0,
+    numbuttons: int = 0,
+    hat_value: tuple[int, int] = (0, 0),
+    axis_values: dict[int, float] | None = None,
+    button_values: dict[int, bool] | None = None,
+) -> Any:
+    """Create a mock joystick with configurable hat, axis, and button values."""
+    joy = MagicMock()
+    joy.get_numhats.return_value = numhats
+    joy.get_numaxes.return_value = numaxes
+    joy.get_numbuttons.return_value = numbuttons
+    joy.get_hat.return_value = hat_value
+
+    _axis = axis_values or {}
+    joy.get_axis.side_effect = lambda i: _axis.get(i, 0.0)
+
+    _btn = button_values or {}
+    joy.get_button.side_effect = lambda i: _btn.get(i, False)
+
+    return joy
+
+
+def test_check_gamepad_action_returns_false_without_joystick(
+    pygame_init: None,
+) -> None:
+    """_check_gamepad_action should return False when joystick is None."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = None
+    assert handler._check_gamepad_action("UP") is False
+
+
+def test_check_gamepad_up_hat(pygame_init: None) -> None:
+    """D-pad hat up should register UP action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numhats=1, hat_value=(0, 1))
+    assert handler._check_gamepad_action("UP") is True
+
+
+def test_check_gamepad_up_axis(pygame_init: None) -> None:
+    """Left stick up (axis 1 < -0.5) should register UP action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numaxes=2, axis_values={1: -0.8})
+    assert handler._check_gamepad_action("UP") is True
+
+
+def test_check_gamepad_down_hat(pygame_init: None) -> None:
+    """D-pad hat down should register DOWN action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numhats=1, hat_value=(0, -1))
+    assert handler._check_gamepad_action("DOWN") is True
+
+
+def test_check_gamepad_down_axis(pygame_init: None) -> None:
+    """Left stick down (axis 1 > 0.5) should register DOWN action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numaxes=2, axis_values={1: 0.8})
+    assert handler._check_gamepad_action("DOWN") is True
+
+
+def test_check_gamepad_left_hat(pygame_init: None) -> None:
+    """D-pad hat left should register LEFT action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numhats=1, hat_value=(-1, 0))
+    assert handler._check_gamepad_action("LEFT") is True
+
+
+def test_check_gamepad_left_axis(pygame_init: None) -> None:
+    """Left stick left (axis 0 < -0.5) should register LEFT action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numaxes=1, axis_values={0: -0.8})
+    assert handler._check_gamepad_action("LEFT") is True
+
+
+def test_check_gamepad_right_hat(pygame_init: None) -> None:
+    """D-pad hat right should register RIGHT action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numhats=1, hat_value=(1, 0))
+    assert handler._check_gamepad_action("RIGHT") is True
+
+
+def test_check_gamepad_right_axis(pygame_init: None) -> None:
+    """Left stick right (axis 0 > 0.5) should register RIGHT action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numaxes=1, axis_values={0: 0.8})
+    assert handler._check_gamepad_action("RIGHT") is True
+
+
+def test_check_gamepad_attack_button(pygame_init: None) -> None:
+    """Button 0 should register ATTACK action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=1, button_values={0: True})
+    assert handler._check_gamepad_action("ATTACK") is True
+
+
+def test_check_gamepad_jump_button(pygame_init: None) -> None:
+    """Button 1 should register JUMP action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=2, button_values={1: True})
+    assert handler._check_gamepad_action("JUMP") is True
+
+
+def test_check_gamepad_magic_button(pygame_init: None) -> None:
+    """Button 2 should register MAGIC action."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=3, button_values={2: True})
+    assert handler._check_gamepad_action("MAGIC") is True
+
+
+def test_check_gamepad_unknown_action(pygame_init: None) -> None:
+    """Unknown action should return False."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=3)
+    assert handler._check_gamepad_action("UNKNOWN") is False
+
+
+def test_check_gamepad_no_hats_no_axes(pygame_init: None) -> None:
+    """Directional actions should return False when no hats or axes exist."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numhats=0, numaxes=0)
+    assert handler._check_gamepad_action("UP") is False
+    assert handler._check_gamepad_action("DOWN") is False
+    assert handler._check_gamepad_action("LEFT") is False
+    assert handler._check_gamepad_action("RIGHT") is False
+
+
+def test_check_gamepad_no_buttons(pygame_init: None) -> None:
+    """Button actions should return False when no buttons exist."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=0)
+    assert handler._check_gamepad_action("ATTACK") is False
+    assert handler._check_gamepad_action("JUMP") is False
+    assert handler._check_gamepad_action("MAGIC") is False
+
+
+def test_gamepad_or_keyboard_combined_update(pygame_init: None) -> None:
+    """Gamepad input OR'd with keyboard state during update()."""
+    handler = InputHandler(1, P1_CONTROLS)
+    # Attach a mock gamepad that presses ATTACK
+    handler.joystick = _make_mock_joystick(numbuttons=1, button_values={0: True})
+    handler.update()
+    # Even with no keyboard keys pressed, ATTACK should be True from gamepad
+    assert handler.pressed["ATTACK"] is True
+
+
+def test_gamepad_just_pressed_triggers_combo_buffer(pygame_init: None) -> None:
+    """Gamepad just_pressed should add entries to the combo buffer."""
+    handler = InputHandler(1, P1_CONTROLS)
+    handler.joystick = _make_mock_joystick(numbuttons=1, button_values={0: True})
+    # First update: ATTACK transitions from False → True → just_pressed
+    handler.update()
+    assert handler.just_pressed["ATTACK"] is True
+    assert len(handler.combo_buffer) > 0
+    assert handler.combo_buffer[-1][0] == "ATTACK"
