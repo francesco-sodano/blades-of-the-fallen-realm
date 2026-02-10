@@ -196,18 +196,18 @@ def test_get_direction_right(pygame_init: None) -> None:
 
 
 def test_get_direction_up_left_diagonal(pygame_init: None) -> None:
-    """get_direction should return normalized (-1, -1) for diagonal up-left."""
+    """get_direction should return (-1, -1) for diagonal up-left."""
     handler = InputHandler(1, P1_CONTROLS)
     handler.pressed["UP"] = True
     handler.pressed["LEFT"] = True
     dx, dy = handler.get_direction()
-    # After normalization and int conversion, should be (-1, -1) or close
+    # Returns raw integer components without normalization
     assert dx == -1
     assert dy == -1
 
 
 def test_get_direction_up_right_diagonal(pygame_init: None) -> None:
-    """get_direction should return normalized (1, -1) for diagonal up-right."""
+    """get_direction should return (1, -1) for diagonal up-right."""
     handler = InputHandler(1, P1_CONTROLS)
     handler.pressed["UP"] = True
     handler.pressed["RIGHT"] = True
@@ -217,7 +217,7 @@ def test_get_direction_up_right_diagonal(pygame_init: None) -> None:
 
 
 def test_get_direction_down_left_diagonal(pygame_init: None) -> None:
-    """get_direction should return normalized (-1, 1) for diagonal down-left."""
+    """get_direction should return (-1, 1) for diagonal down-left."""
     handler = InputHandler(1, P1_CONTROLS)
     handler.pressed["DOWN"] = True
     handler.pressed["LEFT"] = True
@@ -227,7 +227,7 @@ def test_get_direction_down_left_diagonal(pygame_init: None) -> None:
 
 
 def test_get_direction_down_right_diagonal(pygame_init: None) -> None:
-    """get_direction should return normalized (1, 1) for diagonal down-right."""
+    """get_direction should return (1, 1) for diagonal down-right."""
     handler = InputHandler(1, P1_CONTROLS)
     handler.pressed["DOWN"] = True
     handler.pressed["RIGHT"] = True

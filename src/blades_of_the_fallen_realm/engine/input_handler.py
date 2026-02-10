@@ -97,7 +97,7 @@ class InputHandler:
         self._previous_pressed: dict[str, bool] = self.pressed.copy()
 
         # Combo buffer: stores (action, timestamp) tuples
-        self.combo_buffer: list[tuple[str, float]] = []
+        self.combo_buffer: list[tuple[str, int]] = []
 
         # Gamepad support
         self.joystick: Any = None  # pygame.joystick.Joystick | None
@@ -291,11 +291,12 @@ class InputHandler:
         return self.just_pressed.get(action, False)
 
     def get_direction(self) -> tuple[int, int]:
-        """Get the normalized direction vector based on directional input.
+        """Get the direction vector based on directional input.
 
         Returns:
             Tuple (dx, dy) where each component is -1, 0, or 1.
-            For diagonal movement, values remain as -1, 0, or 1 (not normalized to unit length).
+            Returns raw integer components without normalization,
+            so diagonal movement will have magnitude √2.
         """
         dx = 0
         dy = 0
