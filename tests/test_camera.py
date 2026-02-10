@@ -1,5 +1,7 @@
 """Tests for the horizontal scrolling Camera."""
 
+import pytest
+
 from blades_of_the_fallen_realm.engine.camera import Camera, HasX
 from blades_of_the_fallen_realm.settings import (
     PARALLAX_FAR,
