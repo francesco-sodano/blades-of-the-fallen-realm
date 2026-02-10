@@ -285,3 +285,45 @@ def test_is_finished_true_only_for_completed_one_shot() -> None:
     ctrl.play("DEATH")
     ctrl.update(5000.0)
     assert ctrl.is_finished() is True
+
+
+# ---------------------------------------------------------------------------
+# Non-looping, non-oneshot animation stops at last frame
+# ---------------------------------------------------------------------------
+
+
+def test_non_looping_non_oneshot_stops_at_last_frame() -> None:
+    """A non-looping, non-oneshot animation should stop at last frame and mark finished."""
+    ctrl = AnimationController(
+        {
+            "STOP": AnimationData(
+                frames=_make_frames(3),
+                frame_duration=100.0,
+                loop=False,
+                one_shot=False,
+            )
+        }
+    )
+    ctrl.play("STOP")
+    ctrl.update(500.0)  # More than enough to reach the last frame
+    assert ctrl.current_frame == 2
+    assert ctrl.is_finished() is True
+
+
+def test_non_looping_non_oneshot_does_not_advance_past_last_frame() -> None:
+    """Further updates should not advance past the last frame."""
+    ctrl = AnimationController(
+        {
+            "STOP": AnimationData(
+                frames=_make_frames(3),
+                frame_duration=100.0,
+                loop=False,
+                one_shot=False,
+            )
+        }
+    )
+    ctrl.play("STOP")
+    ctrl.update(1000.0)
+    ctrl.update(1000.0)
+    assert ctrl.current_frame == 2
+    assert ctrl.is_finished() is True
