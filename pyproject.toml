@@ -3,7 +3,7 @@ name = "blades_of_the_fallen_realm"
 version = "0.1.0"
 description = "Blades of the Fallen Realm — A retro side-scrolling beat 'em up inspired by SEGA Golden Axe, built with PyGame."
 readme = "README.md"
-requires-python = ">=3.12"
+requires-python = ">=3.12.12,<3.13"
 authors = [{ name = "Francesco Sodano" }]
 license = { text = "MIT" }
 dependencies = ["pygame-ce>=2.5.3"]
@@ -17,3 +17,4 @@ dev = ["black==26.1.0", "mypy==1.19.1", "pytest==9.0.2"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["src"]
