@@ -4,6 +4,7 @@ import pygame
 import pytest
 
 from blades_of_the_fallen_realm.engine.game import Game, GameState
+from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
 
 
 @pytest.fixture
@@ -98,10 +99,7 @@ def test_add_player_single(game: Game) -> None:
     """Test adding a single player."""
 
     # Create a mock player object
-    class MockPlayer:
-        pass
-
-    player1 = MockPlayer()
+    player1 = BaseEntity()
     game.add_player(player1)
 
     assert len(game.players) == 1
@@ -112,11 +110,8 @@ def test_add_player_two_players(game: Game) -> None:
     """Test adding two players for co-op."""
 
     # Create mock player objects
-    class MockPlayer:
-        pass
-
-    player1 = MockPlayer()
-    player2 = MockPlayer()
+    player1 = BaseEntity()
+    player2 = BaseEntity()
 
     game.add_player(player1)
     game.add_player(player2)
@@ -130,13 +125,10 @@ def test_players_list_is_always_list(game: Game) -> None:
     """Test that players is always a list type."""
     assert isinstance(game.players, list)
 
-    class MockPlayer:
-        pass
-
-    game.add_player(MockPlayer())
+    game.add_player(BaseEntity())
     assert isinstance(game.players, list)
 
-    game.add_player(MockPlayer())
+    game.add_player(BaseEntity())
     assert isinstance(game.players, list)
 
 
