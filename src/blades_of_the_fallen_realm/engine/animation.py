@@ -37,7 +37,7 @@ class AnimationController:
     """
 
     def __init__(self, animations: dict[str, AnimationData]) -> None:
-        """Initialise the animation controller.
+        """Initialize the animation controller.
 
         Args:
             animations: Mapping of state name to animation data.
@@ -114,7 +114,14 @@ class AnimationController:
 
         Returns:
             The :class:`pygame.Rect` for the current frame.
+
+        Raises:
+            RuntimeError: If no animation has been started via :meth:`play`.
         """
+        if not self.current_animation:
+            raise RuntimeError(
+                "No animation is playing. Call play() before get_current_frame()."
+            )
         anim = self.animations[self.current_animation]
         return anim.frames[self.current_frame]
 

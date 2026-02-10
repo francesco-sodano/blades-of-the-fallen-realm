@@ -229,6 +229,17 @@ def test_get_current_frame_returns_correct_rect() -> None:
     assert ctrl.get_current_frame() == frames[1]
 
 
+def test_get_current_frame_raises_without_play() -> None:
+    """get_current_frame() should raise RuntimeError if play() was never called."""
+    import pytest
+
+    ctrl = AnimationController(
+        {"IDLE": AnimationData(frames=_make_frames(2), frame_duration=100.0)}
+    )
+    with pytest.raises(RuntimeError):
+        ctrl.get_current_frame()
+
+
 # ---------------------------------------------------------------------------
 # is_finished() returns correct status
 # ---------------------------------------------------------------------------
