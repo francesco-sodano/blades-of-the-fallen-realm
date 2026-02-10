@@ -124,9 +124,10 @@ class BaseEntity:
     def apply_gravity(self) -> None:
         """Apply gravity to the vertical velocity and land at z = 0.
 
-        ``GRAVITY`` is subtracted from ``vel_z`` each call.  If the
-        entity falls to or below ground level, ``z`` is clamped to 0
-        and ``vel_z`` is reset.
+        Gravity is applied per frame (fixed-timestep at 60 FPS) matching
+        the retro arcade physics model.  ``GRAVITY`` is subtracted from
+        ``vel_z`` each call.  If the entity falls to or below ground
+        level, ``z`` is clamped to 0 and ``vel_z`` is reset.
         """
         self.vel_z -= GRAVITY
         self.z += self.vel_z
@@ -138,7 +139,10 @@ class BaseEntity:
         """Update entity state each frame.
 
         Applies velocity to position, ticks invincibility frames, and
-        applies gravity when airborne.
+        applies gravity when airborne.  Gravity and invincibility are
+        frame-count based (fixed 60 FPS timestep) consistent with the
+        retro arcade physics model used by ``GRAVITY`` and
+        ``INVINCIBILITY_FRAMES`` constants.
 
         Args:
             dt: Delta time since last frame (seconds).
