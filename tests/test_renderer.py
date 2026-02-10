@@ -1,20 +1,10 @@
 """Tests for the Y-sort depth-ordered Renderer."""
 
 import pygame
-import pytest
 
 from blades_of_the_fallen_realm.engine.renderer import Renderer
 from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
 from blades_of_the_fallen_realm.settings import DEPTH_BAND_MAX, DEPTH_BAND_MIN
-
-
-@pytest.fixture(autouse=True)
-def _init_pygame() -> None:
-    """Ensure pygame is initialised for every test."""
-    pygame.init()
-    yield  # type: ignore[misc]
-    pygame.quit()
-
 
 # --- add / remove entity ---
 

@@ -1,7 +1,6 @@
 """Tests for the hitbox/hurtbox collision system."""
 
 import pygame
-import pytest
 
 from blades_of_the_fallen_realm.engine.collision import (
     HitboxData,
@@ -11,15 +10,6 @@ from blades_of_the_fallen_realm.engine.collision import (
     resolve_ground_collision,
 )
 from blades_of_the_fallen_realm.settings import DEPTH_BAND_MAX, DEPTH_BAND_MIN
-
-
-@pytest.fixture(autouse=True)
-def _init_pygame() -> None:
-    """Ensure pygame is initialised for every test."""
-    pygame.init()
-    yield  # type: ignore[misc]
-    pygame.quit()
-
 
 # --- check_overlap ---
 
