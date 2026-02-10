@@ -3,8 +3,6 @@
 A retro side-scrolling beat 'em up inspired by SEGA Golden Axe (1989).
 """
 
-import sys
-
 import pygame
 
 from blades_of_the_fallen_realm.settings import (
@@ -33,7 +31,6 @@ def main() -> None:
         clock.tick(FPS)
 
     pygame.quit()
-    sys.exit()
 
 
 if __name__ == "__main__":
