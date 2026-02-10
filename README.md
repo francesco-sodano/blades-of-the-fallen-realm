@@ -44,21 +44,30 @@ Gamepad support: up to 2 gamepads auto-detected.
 
 ## Requirements
 
-- Python 3.12+
+- Python 3.12.12+
+- [uv](https://docs.astral.sh/uv/) package manager
 - pygame-ce
 
 ## Installation
 
 ```bash
+# Install uv if you haven't already
+pip install uv
+
+# Clone and setup the repository
 git clone https://github.com/francesco-sodano/blades-of-the-fallen-realm.git
 cd blades-of-the-fallen-realm
+
+# Install Python 3.12.12, create venv, and sync all dependencies
+uv python install 3.12.12
+uv venv --python 3.12.12 .venv
 uv sync --group dev
 ```
 
 ## Usage
 
 ```bash
-python -m blades_of_the_fallen_realm
+uv run python -m blades_of_the_fallen_realm
 ```
 
 ## Development
@@ -97,14 +106,14 @@ scripts/             # Helper scripts
 ### Run tests
 
 ```bash
-pytest
+uv run pytest
 ```
 
 ### Format & lint
 
 ```bash
-black .
-mypy src/
+uv run black .
+uv run mypy src/
 ```
 
 ## Docker
