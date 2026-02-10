@@ -47,7 +47,7 @@ def test_main_initializes_pygame(mock_pygame: MagicMock, mock_sys: MagicMock) ->
 
 def test_dunder_main_importable() -> None:
     """__main__.py should be importable (the main() call is at module level)."""
-    import importlib
+    import importlib.util
 
     # We can't actually run __main__.py as it calls main() at import time.
     # Instead, verify the module file exists and is loadable by checking spec.

@@ -6,12 +6,12 @@ from unittest.mock import MagicMock
 import pygame
 
 from blades_of_the_fallen_realm.engine.input_handler import (
-    COMBO_WINDOW_MS,
     InputHandler,
     P1_CONTROLS,
     P2_CONTROLS,
     PlayerControls,
 )
+from blades_of_the_fallen_realm.settings import COMBO_WINDOW_MS
 
 # ---------------------------------------------------------------------------
 # PlayerControls tests
