@@ -1,7 +1,5 @@
 """Tests for the horizontal scrolling Camera."""
 
-import pytest
-
 from blades_of_the_fallen_realm.engine.camera import Camera
 from blades_of_the_fallen_realm.settings import (
     PARALLAX_FAR,
@@ -21,12 +19,6 @@ class _MockPlayer:
 
     def __init__(self, x: float = 0.0) -> None:
         self.x = x
-
-
-@pytest.fixture
-def camera() -> Camera:
-    """Return a fresh Camera instance for each test."""
-    return Camera()
 
 
 # ---------------------------------------------------------------------------

@@ -1,16 +1,9 @@
 """Tests for Game class and GameState enum."""
 
 import pygame
-import pytest
 
 from blades_of_the_fallen_realm.engine.game import Game, GameState
 from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
-
-
-@pytest.fixture
-def game() -> Game:
-    """Provide a Game instance for each test."""
-    return Game()
 
 
 def test_game_state_enum_values() -> None:
