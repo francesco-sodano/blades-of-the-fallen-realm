@@ -2,7 +2,7 @@
 
 import pytest
 
-from blades_of_the_fallen_realm.engine.camera import Camera
+from blades_of_the_fallen_realm.engine.camera import Camera, HasX
 from blades_of_the_fallen_realm.settings import (
     PARALLAX_FAR,
     PARALLAX_MID,
@@ -231,3 +231,19 @@ def test_update_with_no_players(camera: Camera) -> None:
 def test_is_locked_property_default(camera: Camera) -> None:
     """Camera should not be locked by default."""
     assert camera.is_locked is False
+
+
+# ---------------------------------------------------------------------------
+# Protocol compliance
+# ---------------------------------------------------------------------------
+
+
+def test_protocol_compliance() -> None:
+    """Objects with an ``x`` attribute should satisfy the HasX protocol."""
+
+    class SimpleObj:
+        def __init__(self) -> None:
+            self.x: float = 42.0
+
+    obj: HasX = SimpleObj()
+    assert obj.x == 42.0

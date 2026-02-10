@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Any
-
 import pygame
 
 from blades_of_the_fallen_realm.settings import COMBO_WINDOW_MS
@@ -99,7 +97,7 @@ class InputHandler:
         self.combo_buffer: list[tuple[str, int]] = []
 
         # Gamepad support
-        self.joystick: Any = None  # pygame.joystick.Joystick | None
+        self.joystick: pygame.joystick.JoystickType | None = None
         self._detect_gamepad()
 
     def _detect_gamepad(self) -> None:
