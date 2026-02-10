@@ -62,10 +62,6 @@ CAMP_DURATION_SECONDS: int = 15
 PIXI_SPAWN_SOLO: int = 2
 PIXI_SPAWN_COOP: int = 3
 
-# --- Player controls ---
-P1_CONTROLS: dict[str, int] = {}  # Populated at runtime with pygame key constants
-P2_CONTROLS: dict[str, int] = {}  # Populated at runtime with pygame key constants
-
 # --- Colors ---
 COLOR_BLACK: tuple[int, int, int] = (0, 0, 0)
 COLOR_WHITE: tuple[int, int, int] = (255, 255, 255)

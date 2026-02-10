@@ -1,4 +1,7 @@
-"""Base entity class — position, HP, hitbox/hurtbox, state machine, velocity, invincibility."""
+"""Base entity class — position, velocity, image, and draw.
+
+See Issue #8 for planned additions (HP, hitbox/hurtbox, state machine, invincibility).
+"""
 
 from __future__ import annotations
 
