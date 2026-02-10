@@ -1,9 +1,10 @@
 """Game state manager — handles MENU, CHARACTER_SELECT, PLAYING, CAMP, PAUSED, GAME_OVER."""
 
 from enum import Enum
-from typing import Any
 
 import pygame
+
+from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
 
 
 class GameState(str, Enum):
@@ -23,9 +24,7 @@ class Game:
     def __init__(self) -> None:
         """Initialize the game with default state and empty player list."""
         self.state: GameState = GameState.MENU
-        self.players: list[Any] = (
-            []
-        )  # Will be list[Player] once Player class is implemented
+        self.players: list[BaseEntity] = []
         self.clock: pygame.time.Clock = pygame.time.Clock()
 
     def change_state(self, new_state: GameState) -> None:
@@ -37,7 +36,7 @@ class Game:
         """
         self.state = new_state
 
-    def add_player(self, player: Any) -> None:
+    def add_player(self, player: BaseEntity) -> None:
         """
         Add a player to the game.
 

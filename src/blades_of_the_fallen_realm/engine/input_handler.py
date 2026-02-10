@@ -172,6 +172,24 @@ class InputHandler:
         if len(self.combo_buffer) > 3:
             self.combo_buffer = self.combo_buffer[-3:]
 
+    # Gamepad mapping: direction actions use hat + axis; button actions use button index.
+    # Each direction entry: (hat_component, hat_threshold, axis_index, axis_threshold)
+    #   hat_component: 0 = X-axis of hat, 1 = Y-axis of hat
+    #   hat_threshold: value to compare against (> for positive, < for negative)
+    #   axis_index: joystick axis index
+    #   axis_threshold: threshold value (positive → >, negative → <)
+    _DIRECTION_MAP: dict[str, tuple[int, int, int, float]] = {
+        "UP": (1, 1, 1, -0.5),
+        "DOWN": (1, -1, 1, 0.5),
+        "LEFT": (0, -1, 0, -0.5),
+        "RIGHT": (0, 1, 0, 0.5),
+    }
+    _BUTTON_MAP: dict[str, int] = {
+        "ATTACK": 0,
+        "JUMP": 1,
+        "MAGIC": 2,
+    }
+
     def _check_gamepad_action(self, action: str) -> bool:
         """Check if the given action is active on the gamepad.
 
@@ -184,86 +202,34 @@ class InputHandler:
         if not self.joystick:
             return False
 
-        # D-pad and analog stick for directional inputs
-        if action == "UP":
-            # D-pad up or left stick up
-            hat = (
-                self.joystick.get_hat(0)[1] > 0
-                if self.joystick.get_numhats() > 0
-                else False
-            )
-            axis = (
-                self.joystick.get_axis(1) < -0.5
-                if self.joystick.get_numaxes() > 1
-                else False
-            )
+        if action in self._DIRECTION_MAP:
+            hat_comp, hat_thresh, axis_idx, axis_thresh = self._DIRECTION_MAP[action]
+            num_hats = self.joystick.get_numhats()
+            num_axes = self.joystick.get_numaxes()
+
+            hat = False
+            if num_hats > 0:
+                hat_val = self.joystick.get_hat(0)[hat_comp]
+                if hat_thresh > 0:
+                    hat = hat_val > 0
+                else:
+                    hat = hat_val < 0
+
+            axis = False
+            if num_axes > axis_idx:
+                axis_val = self.joystick.get_axis(axis_idx)
+                if axis_thresh > 0:
+                    axis = axis_val > axis_thresh
+                else:
+                    axis = axis_val < axis_thresh
+
             return hat or axis
 
-        elif action == "DOWN":
-            # D-pad down or left stick down
-            hat = (
-                self.joystick.get_hat(0)[1] < 0
-                if self.joystick.get_numhats() > 0
-                else False
-            )
-            axis = (
-                self.joystick.get_axis(1) > 0.5
-                if self.joystick.get_numaxes() > 1
-                else False
-            )
-            return hat or axis
-
-        elif action == "LEFT":
-            # D-pad left or left stick left
-            hat = (
-                self.joystick.get_hat(0)[0] < 0
-                if self.joystick.get_numhats() > 0
-                else False
-            )
-            axis = (
-                self.joystick.get_axis(0) < -0.5
-                if self.joystick.get_numaxes() > 0
-                else False
-            )
-            return hat or axis
-
-        elif action == "RIGHT":
-            # D-pad right or left stick right
-            hat = (
-                self.joystick.get_hat(0)[0] > 0
-                if self.joystick.get_numhats() > 0
-                else False
-            )
-            axis = (
-                self.joystick.get_axis(0) > 0.5
-                if self.joystick.get_numaxes() > 0
-                else False
-            )
-            return hat or axis
-
-        elif action == "ATTACK":
-            # Button 0 (typically A or X on most gamepads)
-            return (
-                self.joystick.get_button(0)
-                if self.joystick.get_numbuttons() > 0
-                else False
-            )
-
-        elif action == "JUMP":
-            # Button 1 (typically B or Circle on most gamepads)
-            return (
-                self.joystick.get_button(1)
-                if self.joystick.get_numbuttons() > 1
-                else False
-            )
-
-        elif action == "MAGIC":
-            # Button 2 (typically X or Square on most gamepads)
-            return (
-                self.joystick.get_button(2)
-                if self.joystick.get_numbuttons() > 2
-                else False
-            )
+        if action in self._BUTTON_MAP:
+            btn = self._BUTTON_MAP[action]
+            if self.joystick.get_numbuttons() > btn:
+                return bool(self.joystick.get_button(btn))
+            return False
 
         return False
 

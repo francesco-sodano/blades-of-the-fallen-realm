@@ -3,10 +3,17 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import Protocol
 
 import pygame
 
 from blades_of_the_fallen_realm.settings import DEPTH_PROXIMITY
+
+
+class HasY(Protocol):
+    """Structural type for any object with a mutable ``y`` attribute."""
+
+    y: float
 
 
 @dataclass
@@ -81,7 +88,7 @@ def check_hit(
 
 
 def resolve_ground_collision(
-    entity: object,
+    entity: HasY,
     depth_band_min: float,
     depth_band_max: float,
 ) -> None:
@@ -92,8 +99,7 @@ def resolve_ground_collision(
         depth_band_min: Top of the walkable depth band (minimum Y).
         depth_band_max: Bottom of the walkable depth band (maximum Y).
     """
-    y: float = getattr(entity, "y")
-    if y < depth_band_min:
-        entity.y = depth_band_min  # type: ignore[attr-defined]
-    elif y > depth_band_max:
-        entity.y = depth_band_max  # type: ignore[attr-defined]
+    if entity.y < depth_band_min:
+        entity.y = depth_band_min
+    elif entity.y > depth_band_max:
+        entity.y = depth_band_max
