@@ -13,8 +13,8 @@ class Renderer:
 
     Entities with a lower Y position (further from the camera) are drawn
     first so that entities closer to the viewer overlap those behind them.
-    Entity Y positions are clamped to the walkable depth band defined by
-    ``DEPTH_BAND_MIN`` and ``DEPTH_BAND_MAX``.
+    Entity Y positions are clamped for sorting purposes only; the actual
+    ``y`` attribute is never modified by the renderer.
     """
 
     def __init__(self) -> None:
@@ -37,10 +37,26 @@ class Renderer:
         """
         self.entities.remove(entity)
 
+    @staticmethod
+    def _clamped_y(entity: BaseEntity) -> float:
+        """Return the entity's Y clamped to the walkable depth band.
+
+        This is used only for sorting/drawing and does **not** mutate
+        the entity.
+
+        Args:
+            entity: The entity whose Y value to clamp.
+
+        Returns:
+            The clamped Y value.
+        """
+        return max(DEPTH_BAND_MIN, min(entity.y, DEPTH_BAND_MAX))
+
     def draw(self, screen: pygame.Surface, camera_offset: tuple[float, float]) -> None:
         """Sort entities by Y position and draw them in order.
 
-        Entities are clamped within the depth band before sorting.
+        Entities are sorted using a clamped Y value within the depth band,
+        but their actual ``y`` attribute is **not** modified.
         Lower Y values are drawn first (further back), higher Y values
         are drawn on top (closer to the camera).
 
@@ -48,10 +64,7 @@ class Renderer:
             screen: The target surface to draw onto.
             camera_offset: ``(offset_x, offset_y)`` camera translation.
         """
-        for entity in self.entities:
-            entity.y = max(DEPTH_BAND_MIN, min(entity.y, DEPTH_BAND_MAX))
-
-        sorted_entities = sorted(self.entities, key=lambda e: e.y)
+        sorted_entities = sorted(self.entities, key=self._clamped_y)
 
         for entity in sorted_entities:
             entity.draw(screen, camera_offset)

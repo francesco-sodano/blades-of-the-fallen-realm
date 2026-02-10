@@ -112,23 +112,25 @@ def test_lower_y_drawn_before_higher_y() -> None:
 
 
 def test_depth_band_clamp_below_min() -> None:
-    """Entity Y below DEPTH_BAND_MIN should be clamped to the minimum."""
+    """Entity Y below DEPTH_BAND_MIN should NOT be mutated by the renderer."""
     renderer = Renderer()
-    entity = BaseEntity(x=0.0, y=float(DEPTH_BAND_MIN - 50))
+    original_y = float(DEPTH_BAND_MIN - 50)
+    entity = BaseEntity(x=0.0, y=original_y)
     renderer.add_entity(entity)
     screen = pygame.Surface((960, 540))
     renderer.draw(screen, (0.0, 0.0))
-    assert entity.y == DEPTH_BAND_MIN
+    assert entity.y == original_y
 
 
 def test_depth_band_clamp_above_max() -> None:
-    """Entity Y above DEPTH_BAND_MAX should be clamped to the maximum."""
+    """Entity Y above DEPTH_BAND_MAX should NOT be mutated by the renderer."""
     renderer = Renderer()
-    entity = BaseEntity(x=0.0, y=float(DEPTH_BAND_MAX + 50))
+    original_y = float(DEPTH_BAND_MAX + 50)
+    entity = BaseEntity(x=0.0, y=original_y)
     renderer.add_entity(entity)
     screen = pygame.Surface((960, 540))
     renderer.draw(screen, (0.0, 0.0))
-    assert entity.y == DEPTH_BAND_MAX
+    assert entity.y == original_y
 
 
 def test_depth_band_within_bounds_unchanged() -> None:
@@ -140,6 +142,16 @@ def test_depth_band_within_bounds_unchanged() -> None:
     screen = pygame.Surface((960, 540))
     renderer.draw(screen, (0.0, 0.0))
     assert entity.y == mid_y
+
+
+def test_draw_does_not_mutate_entity_y() -> None:
+    """Renderer.draw() must never modify entity.y — clamping is sort-only."""
+    renderer = Renderer()
+    entity = BaseEntity(x=100.0, y=float(DEPTH_BAND_MAX + 100))
+    renderer.add_entity(entity)
+    screen = pygame.Surface((960, 540))
+    renderer.draw(screen, (0.0, 0.0))
+    assert entity.y == float(DEPTH_BAND_MAX + 100)
 
 
 # --- Camera offset ---
