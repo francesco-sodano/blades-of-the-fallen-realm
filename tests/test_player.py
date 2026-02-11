@@ -353,8 +353,8 @@ def test_handle_input_no_handler() -> None:
     assert player.state == "IDLE"
 
 
-def test_handle_input_dead_player() -> None:
-    """handle_input() should do nothing when player is dead."""
+def test_handle_input_not_alive_player() -> None:
+    """handle_input() should do nothing when player is not alive."""
     handler = InputHandler(player_id=1, controls=P1_CONTROLS)
     player = Player(input_handler=handler)
     player.hp = 0

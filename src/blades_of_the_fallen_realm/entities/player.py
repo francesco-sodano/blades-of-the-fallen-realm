@@ -142,9 +142,7 @@ class Player(BaseEntity):
         new_state: str = _COMBO_STATES[state_index]
         self.change_state(new_state)
 
-        # Third hit causes knockdown
-        if self.combo_count >= 3:
-            self.change_state("ATTACK3")
+        # Third hit causes knockdown (state already set via _COMBO_STATES)
 
     # ------------------------------------------------------------------
     # Magic system
