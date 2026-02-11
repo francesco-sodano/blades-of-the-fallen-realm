@@ -12,6 +12,7 @@ from blades_of_the_fallen_realm.engine.input_handler import (
 )
 from blades_of_the_fallen_realm.engine.renderer import Renderer
 from blades_of_the_fallen_realm.entities.base_entity import BaseEntity
+from blades_of_the_fallen_realm.entities.player import Player
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -67,3 +68,15 @@ def input_handler_p2() -> InputHandler:
 def game() -> Game:
     """Provide a Game instance."""
     return Game()
+
+
+@pytest.fixture
+def player_p1(input_handler_p1: InputHandler) -> Player:
+    """Provide a Player 1 instance with input handler."""
+    return Player(x=100.0, y=200.0, player_id=1, input_handler=input_handler_p1)
+
+
+@pytest.fixture
+def player_p2(input_handler_p2: InputHandler) -> Player:
+    """Provide a Player 2 instance with input handler."""
+    return Player(x=300.0, y=200.0, player_id=2, input_handler=input_handler_p2)
